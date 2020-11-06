@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+namespace是名称空间,它的取值必须是对应的接口的全类名
+-->
+<mapper namespace="com.zhao.gmall.product.mapper.SpuSaleAttrMapper">
+
+    <resultMap id="SpuSaleAttrMap" type="com.zhao.gmall.model.product.SpuSaleAttr" autoMapping="true">
+
+        <id property="id" column="id"></id>
+<!--      spuSaleAttrValueList要与 SpuSaleAttr的属性名相同-->
+        <collection property="spuSaleAttrValueList" ofType="com.zhao.gmall.model.product.SpuSaleAttrValue"
+                    autoMapping="true">
+            <id property="id" column="sale_attr_value_id"></id>
+        </collection>
+
+    </resultMap>
+
+    <!--
+    select 标签用来配置select查询语句
+    id 属性配置一个唯一的标识，和Maapper接口的要实现方法名相同
+    resultType 是查询后每一行记录封装的对象类型
+    #{id} 它是占位符 ?
+    -->
+    <sql id="spuSaleAttr">
+        sa.id ,
+        sa.spu_id,
+        sa.sale_attr_name,
+        sa.base_sale_attr_id,
+        sv.id sale_attr_value_id,
+        sv.sale_attr_value_name
+    </sql>
+    <select id="getspuSaleAttrList" resultMap="SpuSaleAttrMap">
+        select
+        <include refid="spuSaleAttr"></include>
+        from spu_sale_attr sa inner join spu_sale_attr_value sv
+        on sa.spu_id=sv.spu_id and sa.base_sale_attr_id=sv.base_sale_attr_id
+        where sa.spu_id=#{spu_id}
+    </select>
+
+
+</mapper>

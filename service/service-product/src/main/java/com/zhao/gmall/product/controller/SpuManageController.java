@@ -1,16 +1,20 @@
 package com.zhao.gmall.product.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhao.gmall.common.result.Result;
 import com.zhao.gmall.model.product.BaseSaleAttr;
+import com.zhao.gmall.model.product.SpuImage;
 import com.zhao.gmall.model.product.SpuInfo;
+import com.zhao.gmall.product.mapper.SpuImageMapper;
 import com.zhao.gmall.product.service.BaseSaleAttrService;
 import com.zhao.gmall.product.service.ManageService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Wrapper;
 import java.util.List;
 
 @Api(tags = "后台SPU数据接口测试")
@@ -60,6 +64,8 @@ public class SpuManageController {
         manageService.saveSpuInfo(spuInfo);
         return Result.ok();
     }
+
+
 
 
 

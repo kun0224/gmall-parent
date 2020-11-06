@@ -57,6 +57,7 @@ public interface ManageService {
 
     /**
      * 根据平台属性Id 查询平台属性对象
+     *
      * @param attrId
      * @return
      */
@@ -66,6 +67,7 @@ public interface ManageService {
     /**
      * spu分页查询
      * 因为SpuInfo 中包含三级分类id，所有直接将spuinfo传入第二个参数
+     *
      * @param pageParam
      * @param spuInfo
      * @return
@@ -75,7 +77,48 @@ public interface ManageService {
 
     /**
      * 添加spu
+     *
      * @param spuInfo
      */
     void saveSpuInfo(SpuInfo spuInfo);
+
+    /**
+     * 根据spuId获取图片列表
+     *
+     * @param spuId
+     */
+    List<SpuImage> getspuImageList(Long spuId);
+
+    /**
+     * 根据spuId 查询销售属性集合
+     *
+     * @param spuId
+     * @return
+     */
+    List<SpuSaleAttr> spuSaleAttrList(Long spuId);
+
+    /**
+     * 添加sku
+     * @param skuInfo
+     */
+    void saveSkuInfo(SkuInfo skuInfo);
+
+    /**
+     * sku分页
+     * @param skuInfoPage
+     * @return
+     */
+    IPage<SkuInfo> getPage(Page<SkuInfo> skuInfoPage);
+
+    /**
+     * 商品上架
+     * @param skuId
+     */
+    void onSale(Long skuId);
+
+    /**
+     * 商品下架
+     * @param skuId
+     */
+    void cancelSale(Long skuId);
 }
