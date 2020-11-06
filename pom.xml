@@ -18,6 +18,7 @@
         <module>common</module>
         <module>model</module>
         <module>service</module>
+        <module>server-gateway</module>
     </modules>
 
 

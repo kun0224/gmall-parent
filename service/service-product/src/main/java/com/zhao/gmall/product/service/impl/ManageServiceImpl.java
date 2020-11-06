@@ -1,14 +1,15 @@
 package com.zhao.gmall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zhao.gmall.model.product.BaseAttrInfo;
-import com.zhao.gmall.model.product.BaseCategory1;
-import com.zhao.gmall.model.product.BaseCategory2;
-import com.zhao.gmall.model.product.BaseCategory3;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zhao.gmall.model.product.*;
 import com.zhao.gmall.product.mapper.*;
 import com.zhao.gmall.product.service.ManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -32,6 +33,18 @@ public class ManageServiceImpl implements ManageService {
 
     @Autowired
     private BaseAttrInfoMapper baseAttrInfoMapper;
+
+    @Autowired
+    private SpuInfoMapper spuInfoMapper;
+
+    @Autowired
+    private SpuImageMapper spuImageMapper;
+
+    @Autowired
+    private SpuSaleAttrMapper spuSaleAttrMapper;
+
+    @Autowired
+    private SpuSaleAttrValueMapper spuSaleAttrValueMapper;
 
     /**
      * 查询所有的一级分类信息
@@ -66,4 +79,129 @@ public class ManageServiceImpl implements ManageService {
     public List<BaseAttrInfo> getAttrInfoList(Long category1Id, Long category2Id, Long category3Id) {
         return baseAttrInfoMapper.selectBaseAttrInfoList(category1Id, category2Id, category3Id);
     }
+
+    /**
+     * 保存、修改
+     *
+     * @param baseAttrInfo
+     */
+    @Override
+    @Transactional
+    public void saveAttrInfo(BaseAttrInfo baseAttrInfo) {
+        if (baseAttrInfo.getId() != null) {
+            //修改
+            baseAttrInfoMapper.updateById(baseAttrInfo);
+        } else {
+            //添加
+            baseAttrInfoMapper.insert(baseAttrInfo);
+        }
+
+        baseAttrValueMapper.delete(new QueryWrapper<BaseAttrValue>().eq("attr_id", baseAttrInfo.getId()));
+
+        List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
+
+        if (!CollectionUtils.isEmpty(attrValueList)) {
+            for (BaseAttrValue baseAttrValue : attrValueList) {
+                baseAttrValue.setAttrId(baseAttrInfo.getId());
+                baseAttrValueMapper.insert(baseAttrValue);
+            }
+        }
+    }
+
+    /**
+     * @param attrId
+     * @return
+     */
+    @Override
+    public BaseAttrInfo getBaseAttrInfo(Long attrId) {
+        //  attrId = base_attr_value.attr_id = base_attr_info.id
+        BaseAttrInfo baseAttrInfo = baseAttrInfoMapper.selectById(attrId);
+
+        //  判断平台属性不为空！
+        if (baseAttrInfo != null) {
+            //  baseAttrInfo 没有属性值集合字段
+            //  给attrValueList 赋值！因为控制器要调用平台属性值集合！
+            //  select * from base_attr_value where attr_id =  attrId;
+            baseAttrInfo.setAttrValueList(this.getAttrValueList(attrId));
+        }
+        //  返回数据！
+        return baseAttrInfo;
+    }
+
+    /**
+     * 按照三级分类Id带分页的查询
+     * @param pageParam
+     * @param spuInfo
+     * @return
+     */
+    @Override
+    public IPage<SpuInfo> getSpuInfoPage(Page<SpuInfo> pageParam, SpuInfo spuInfo) {
+
+        QueryWrapper<SpuInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("category3_id", spuInfo.getCategory3Id());
+        queryWrapper.orderByDesc("id");
+        return spuInfoMapper.selectPage(pageParam,queryWrapper);
+
+    }
+
+    /**
+     * 根据属性id获取属性值
+     *
+     * @param attrId
+     * @return
+     */
+    private List<BaseAttrValue> getAttrValueList(Long attrId) {
+        // select * from baseAttrValue where attrId = ?
+        QueryWrapper queryWrapper = new QueryWrapper<BaseAttrValue>();
+        queryWrapper.eq("attr_id", attrId);
+        List<BaseAttrValue> baseAttrValueList = baseAttrValueMapper.selectList(queryWrapper);
+        return baseAttrValueList;
+    }
+
+    /**
+     * 添加spu
+     * @param spuInfo
+     */
+    @Override
+    @Transactional
+    public void saveSpuInfo(SpuInfo spuInfo) {
+
+        spuInfoMapper.insert(spuInfo);
+
+        List<SpuImage> spuImageList = spuInfo.getSpuImageList();
+        if (!CollectionUtils.isEmpty(spuImageList)){
+            for (SpuImage spuImage : spuImageList){
+                spuImage.setSpuId(spuInfo.getId());
+                spuImageMapper.insert(spuImage);
+            }
+        }
+        //销售属性集合
+        List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
+        if (!CollectionUtils.isEmpty(spuSaleAttrList)){
+
+            for (SpuSaleAttr spuSaleAttr: spuSaleAttrList){
+
+                spuSaleAttr.setSpuId(spuInfo.getId());
+                spuSaleAttrMapper.insert(spuSaleAttr);
+                List<SpuSaleAttrValue> spuSaleAttrValueList = spuSaleAttr.getSpuSaleAttrValueList();
+
+                if (!CollectionUtils.isEmpty(spuSaleAttrValueList)){
+
+                    for (SpuSaleAttrValue spuSaleAttrValue : spuSaleAttrValueList){
+
+                        spuSaleAttrValue.setSpuId(spuInfo.getId());
+                        spuSaleAttrValue.setSaleAttrName(spuSaleAttr.getSaleAttrName());
+                        spuSaleAttrValueMapper.insert(spuSaleAttrValue);
+
+                    }
+                }
+            }
+        }
+
+
+    }
+
+
+
+
 }

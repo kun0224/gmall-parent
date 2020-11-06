@@ -11,16 +11,14 @@ import com.zhao.gmall.product.service.ManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = "商品基础属性接口")
+@Api(tags = "后台数据接口测试")
 @RestController
 @RequestMapping("admin/product")
+//@CrossOrigin
 public class BaseManageController {
 
     @Autowired
@@ -70,5 +68,35 @@ public class BaseManageController {
         List<BaseAttrInfo> baseAttrInfoList = manageService.getAttrInfoList(category1Id, category2Id, category3Id);
         return Result.ok(baseAttrInfoList);
     }
+
+    /**
+     * 保存平台属性方法
+     * //  http://api.gmall.com/admin/product/saveAttrInfo
+     *     //  保存平台属性
+     *     //  前台传递的json 数据，转化为对象，那么这个对象就是BaseAttrInfo;
+     *     //  springMVC || @ResponseBody {将java 对象转化为Json 字符串，直接将数据输出到页面}
+     *     //  @RequestBody {将 Json 字符串转化为Java Object }
+     *     //  即使保存，又是修改的控制器！
+     * @param baseAttrInfo
+     * @return
+     */
+    @PostMapping("saveAttrInfo")
+    public Result saveAttrInfo(@RequestBody BaseAttrInfo baseAttrInfo){
+        manageService.saveAttrInfo(baseAttrInfo);
+        return Result.ok();
+    }
+
+    /**
+     *根据平台属性Id获取平台属性对象数据
+     * @param attrId
+     * @return
+     */
+    @GetMapping("getAttrValueList/{attrId}")
+    public Result getAttrValueList(@PathVariable("attrId") Long attrId){
+        BaseAttrInfo baseAttrInfo = manageService.getBaseAttrInfo(attrId);
+        return Result.ok(baseAttrInfo.getAttrValueList());
+    }
+
+
 
 }
