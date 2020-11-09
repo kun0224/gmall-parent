@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhao.gmall.model.product.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface ManageService {
 
@@ -99,12 +101,14 @@ public interface ManageService {
 
     /**
      * 添加sku
+     *
      * @param skuInfo
      */
     void saveSkuInfo(SkuInfo skuInfo);
 
     /**
      * sku分页
+     *
      * @param skuInfoPage
      * @return
      */
@@ -112,13 +116,55 @@ public interface ManageService {
 
     /**
      * 商品上架
+     *
      * @param skuId
      */
     void onSale(Long skuId);
 
     /**
      * 商品下架
+     *
      * @param skuId
      */
     void cancelSale(Long skuId);
+
+    /**
+     * 根据skuid获取sku信息
+     *
+     * @param skuId
+     * @return
+     */
+    SkuInfo getSkuIngfo(Long skuId);
+
+    /**
+     * 通过三级分类id查询分类信息
+     *
+     * @param category3Id
+     * @return
+     */
+    BaseCategoryView getCategoryViewByCategory3Id(Long category3Id);
+
+    /**
+     * 获取sku最新价格
+     *
+     * @param skuId
+     * @return
+     */
+    BigDecimal getSkuPrice(Long skuId);
+
+    /**
+     * 根据spuId，skuId 查询销售属性集合
+     *
+     * @param skuId
+     * @param spuId
+     * @return
+     */
+    List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId);
+
+    /**
+     * 根据spuId 查询map 集合数据
+     * @param spuId
+     * @return
+     */
+    Map getSkuValueIdsMap(Long spuId);
 }

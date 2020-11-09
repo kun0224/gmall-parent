@@ -10,8 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -57,6 +62,9 @@ public class ManageServiceImpl implements ManageService {
 
     @Autowired
     private SkuAttrValueMapper skuAttrValueMapper;
+
+    @Autowired
+    private BaseCategoryViewMapper baseCategoryViewMapper;
 
     /**
      * 查询所有的一级分类信息
@@ -243,6 +251,7 @@ public class ManageServiceImpl implements ManageService {
 
     /**
      * 添加sku
+     *
      * @param skuInfo
      */
     @Override
@@ -252,16 +261,16 @@ public class ManageServiceImpl implements ManageService {
         skuInfoMapper.insert(skuInfo);
 
         List<SkuImage> skuImageList = skuInfo.getSkuImageList();
-        if (!CollectionUtils.isEmpty(skuImageList)){
-            for (SkuImage skuImage : skuImageList){
+        if (!CollectionUtils.isEmpty(skuImageList)) {
+            for (SkuImage skuImage : skuImageList) {
                 skuImage.setSkuId(skuInfo.getId());
                 skuImageMapper.insert(skuImage);
             }
         }
 
         List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
-        if (!CollectionUtils.isEmpty(skuSaleAttrValueList)){
-            for(SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList){
+        if (!CollectionUtils.isEmpty(skuSaleAttrValueList)) {
+            for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
                 skuSaleAttrValue.setSkuId(skuInfo.getId());
                 skuSaleAttrValue.setSpuId(skuInfo.getSpuId());
                 skuSaleAttrValueMapper.insert(skuSaleAttrValue);
@@ -269,8 +278,8 @@ public class ManageServiceImpl implements ManageService {
         }
 
         List<SkuAttrValue> skuAttrValueList = skuInfo.getSkuAttrValueList();
-        if (!CollectionUtils.isEmpty(skuAttrValueList)){
-            for (SkuAttrValue skuAttrValue : skuAttrValueList){
+        if (!CollectionUtils.isEmpty(skuAttrValueList)) {
+            for (SkuAttrValue skuAttrValue : skuAttrValueList) {
                 skuAttrValue.setSkuId(skuInfo.getId());
                 skuAttrValueMapper.insert(skuAttrValue);
             }
@@ -279,6 +288,7 @@ public class ManageServiceImpl implements ManageService {
 
     /**
      * sku分页
+     *
      * @param skuInfoPage
      * @return
      */
@@ -287,11 +297,12 @@ public class ManageServiceImpl implements ManageService {
 
         QueryWrapper<SkuInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
-        return skuInfoMapper.selectPage(skuInfoPage,queryWrapper);
+        return skuInfoMapper.selectPage(skuInfoPage, queryWrapper);
     }
 
     /**
      * 商品上架
+     *
      * @param skuId
      */
     @Override
@@ -305,6 +316,7 @@ public class ManageServiceImpl implements ManageService {
 
     /**
      * 商品下架
+     *
      * @param skuId
      */
     @Override
@@ -314,6 +326,79 @@ public class ManageServiceImpl implements ManageService {
         skuInfo.setId(skuId);
         skuInfo.setIsSale(0);
         skuInfoMapper.updateById(skuInfo);
+    }
+
+    /**
+     * 根据skuid获取sku信息
+     *
+     * @param skuId
+     * @return
+     */
+    @Override
+    public SkuInfo getSkuIngfo(Long skuId) {
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        QueryWrapper<SkuImage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("sku_id", skuId);
+        List<SkuImage> skuImages = skuImageMapper.selectList(queryWrapper);
+        skuInfo.setSkuImageList(skuImages);
+        return skuInfo;
+    }
+
+
+    /**
+     * 通过三级分类id查询分类信息
+     *
+     * @param category3Id
+     * @return
+     */
+    @Override
+    public BaseCategoryView getCategoryViewByCategory3Id(Long category3Id) {
+        return baseCategoryViewMapper.selectById(category3Id);
+    }
+
+    /**
+     * 获取sku最新价格
+     *
+     * @param skuId
+     * @return
+     */
+    @Override
+    public BigDecimal getSkuPrice(Long skuId) {
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        if (null != skuId) {
+            return skuInfo.getPrice();
+        }
+        return new BigDecimal("0");
+    }
+
+    /**
+     * 根据spuId，skuId 查询销售属性集合
+     *
+     * @param skuId
+     * @param spuId
+     * @return
+     */
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
+        List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId, spuId);
+        return spuSaleAttrList;
+    }
+
+    /**
+     * 根据spuId 查询map 集合数据
+     * @param spuId
+     * @return
+     */
+    @Override
+    public Map getSkuValueIdsMap(Long spuId) {
+        Map<Object,Object> map = new HashMap<>();
+        List<Map> mapList = skuSaleAttrValueMapper.selectSaleAttrValuesBySpu(spuId);
+        if (!CollectionUtils.isEmpty(mapList)){
+            for (Map skumap : mapList){
+                map.put(skumap.get("value_ids"), skumap.get("sku_id"));
+            }
+        }
+        return map;
     }
 
 
