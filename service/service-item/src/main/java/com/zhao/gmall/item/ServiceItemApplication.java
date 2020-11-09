@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan({"com.zhao.gmall"})
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages= {"com.zhao.gmall"})
-
 public class ServiceItemApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServiceItemApplication.class, args);

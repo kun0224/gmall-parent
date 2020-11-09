@@ -11,7 +11,18 @@
 
     <artifactId>service-item</artifactId>
 
+    <packaging>jar</packaging>
+    <name>service-item</name>
+    <description>service-item</description>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>com.zhao.gmall</groupId>
+            <artifactId>service-product-client</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <finalName>service-item</finalName>
@@ -22,7 +33,6 @@
             </plugin>
         </plugins>
     </build>
-
 
 
 </project>

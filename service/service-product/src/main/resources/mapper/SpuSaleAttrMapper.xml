@@ -41,7 +41,7 @@ namespace是名称空间,它的取值必须是对应的接口的全类名
         where sa.spu_id=#{spu_id}
     </select>
 
-    <select id="selectSpuSaleAttrListCheckBySku" resultMap="spuSaleAttrMap">
+    <select id="selectSpuSaleAttrListCheckBySku" resultMap="SpuSaleAttrMap">
      SELECT sa.id ,sa.spu_id, sa.sale_attr_name,sa.base_sale_attr_id,
         sv.id sale_attr_value_id,
         sv.sale_attr_value_name,
