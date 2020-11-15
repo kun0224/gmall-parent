@@ -1,5 +1,6 @@
 package com.zhao.gmall.product.client;
 
+import com.zhao.gmall.common.result.Result;
 import com.zhao.gmall.model.product.BaseCategoryView;
 import com.zhao.gmall.model.product.SkuInfo;
 import com.zhao.gmall.model.product.SpuSaleAttr;
@@ -62,5 +63,11 @@ public interface ProductFeignClient {
     @GetMapping("/api/product/inner/getSkuValueIdsMap/{spuId}")
     Map getSkuValueIdsMap(@PathVariable("spuId") Long spuId);
 
+    /**
+     * 获取全部分类信息
+     * @return
+     */
+    @GetMapping("/api/product/getBaseCategoryList")
+    Result getBaseCategoryList();
 
 }

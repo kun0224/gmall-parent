@@ -1,5 +1,6 @@
 package com.zhao.gmall.product.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhao.gmall.model.product.*;
@@ -167,4 +168,10 @@ public interface ManageService {
      * @return
      */
     Map getSkuValueIdsMap(Long spuId);
+
+    /**
+     * 获取全部分类信息
+     * @return
+     */
+    List<JSONObject> getBaseCategoryList();
 }

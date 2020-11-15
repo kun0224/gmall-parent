@@ -1,5 +1,7 @@
 package com.zhao.gmall.product.api;
 
+import com.alibaba.fastjson.JSONObject;
+import com.zhao.gmall.common.result.Result;
 import com.zhao.gmall.model.product.BaseCategoryView;
 import com.zhao.gmall.model.product.SkuInfo;
 import com.zhao.gmall.model.product.SpuSaleAttr;
@@ -56,6 +58,7 @@ public class ProductApiController {
 
     /**
      * 根据spuId，skuId 查询销售属性集合
+     *
      * @param skuId
      * @param spuId
      * @return
@@ -67,13 +70,25 @@ public class ProductApiController {
 
     /**
      * 根据spuId 查询map 集合数据
+     *
      * @param spuId
      * @return
      */
     @GetMapping("inner/getSkuValueIdsMap/{spuId}")
-    public Map getSkuValueIdsMap(@PathVariable("spuId") Long spuId){
+    public Map getSkuValueIdsMap(@PathVariable("spuId") Long spuId) {
 
         return manageService.getSkuValueIdsMap(spuId);
+    }
+
+    /**
+     * 获取全部分类信息
+     *
+     * @return
+     */
+    @GetMapping("getBaseCategoryList")
+    public Result getBaseCategoryList() {
+        List<JSONObject> list = manageService.getBaseCategoryList();
+        return Result.ok(list);
     }
 
 

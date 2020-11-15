@@ -1,5 +1,6 @@
 package com.zhao.gmall.product.client.impl;
 
+import com.zhao.gmall.common.result.Result;
 import com.zhao.gmall.model.product.BaseCategoryView;
 import com.zhao.gmall.model.product.SkuInfo;
 import com.zhao.gmall.model.product.SpuSaleAttr;
@@ -34,6 +35,11 @@ public class ProductDegradeFeignClient implements ProductFeignClient {
 
     @Override
     public Map getSkuValueIdsMap(Long spuId) {
+        return null;
+    }
+
+    @Override
+    public Result getBaseCategoryList() {
         return null;
     }
 }

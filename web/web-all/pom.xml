@@ -17,6 +17,13 @@
             <artifactId>service-item-client</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.zhao.gmall</groupId>
+            <artifactId>service-product-client</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
 
