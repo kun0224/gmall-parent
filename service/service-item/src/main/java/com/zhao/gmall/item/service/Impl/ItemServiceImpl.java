@@ -1,11 +1,10 @@
 package com.zhao.gmall.item.service.Impl;
 
 import com.alibaba.fastjson.JSON;
-import com.zhao.gmall.item.config.ThreadPoolConfig;
 import com.zhao.gmall.item.service.ItemService;
-import com.zhao.gmall.model.product.BaseCategoryView;
-import com.zhao.gmall.model.product.SkuInfo;
-import com.zhao.gmall.model.product.SpuSaleAttr;
+import com.zhao.gmall.list.product.BaseCategoryView;
+import com.zhao.gmall.list.product.SkuInfo;
+import com.zhao.gmall.list.product.SpuSaleAttr;
 import com.zhao.gmall.product.client.ProductFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.function.Supplier;
 
 @Service
 public class ItemServiceImpl implements ItemService {

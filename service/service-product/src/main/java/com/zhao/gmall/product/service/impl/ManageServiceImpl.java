@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhao.gmall.common.cache.GmallCache;
 import com.zhao.gmall.common.constant.RedisConst;
-import com.zhao.gmall.model.product.*;
+import com.zhao.gmall.list.product.*;
 import com.zhao.gmall.product.mapper.*;
 import com.zhao.gmall.product.service.ManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +71,9 @@ public class ManageServiceImpl implements ManageService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private BaseTrademarkMapper baseTrademarkMapper;
 
     /**
      * 查询所有的一级分类信息
@@ -548,6 +551,19 @@ public class ManageServiceImpl implements ManageService {
             list.add(category1);
         }
         return list;
+    }
+
+
+    @Override
+    public BaseTrademark getTrademarkByTmId(Long tmId) {
+        return baseTrademarkMapper.selectById(tmId);
+    }
+
+    @Override
+    public List<BaseAttrInfo> getAttrList(Long skuId) {
+
+        // 多表关联查询
+        return baseAttrInfoMapper.selectAttrList(skuId);
     }
 
 

@@ -1,7 +1,7 @@
 package com.zhao.gmall.product.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zhao.gmall.model.product.BaseSaleAttr;
+import com.zhao.gmall.list.product.BaseSaleAttr;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

@@ -1,9 +1,9 @@
 package com.zhao.gmall.product.controller;
 
 import com.zhao.gmall.common.result.Result;
-import com.zhao.gmall.model.product.SkuInfo;
-import com.zhao.gmall.model.product.SpuImage;
-import com.zhao.gmall.model.product.SpuSaleAttr;
+import com.zhao.gmall.list.product.SkuInfo;
+import com.zhao.gmall.list.product.SpuImage;
+import com.zhao.gmall.list.product.SpuSaleAttr;
 import com.zhao.gmall.product.service.ManageService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

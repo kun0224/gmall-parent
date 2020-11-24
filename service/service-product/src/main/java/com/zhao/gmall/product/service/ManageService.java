@@ -3,7 +3,7 @@ package com.zhao.gmall.product.service;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zhao.gmall.model.product.*;
+import com.zhao.gmall.list.product.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -174,4 +174,18 @@ public interface ManageService {
      * @return
      */
     List<JSONObject> getBaseCategoryList();
+
+    /**
+     * 通过品牌Id 来查询数据
+     * @param tmId
+     * @return
+     */
+    BaseTrademark getTrademarkByTmId(Long tmId);
+
+    /**
+     * 通过skuId 集合来查询数据
+     * @param skuId
+     * @return
+     */
+    List<BaseAttrInfo> getAttrList(Long skuId);
 }

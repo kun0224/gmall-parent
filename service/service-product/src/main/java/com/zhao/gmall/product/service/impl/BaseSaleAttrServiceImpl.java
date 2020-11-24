@@ -1,6 +1,6 @@
 package com.zhao.gmall.product.service.impl;
 
-import com.zhao.gmall.model.product.BaseSaleAttr;
+import com.zhao.gmall.list.product.BaseSaleAttr;
 import com.zhao.gmall.product.mapper.BaseSaleAttrMapper;
 import com.zhao.gmall.product.service.BaseSaleAttrService;
 import org.springframework.beans.factory.annotation.Autowired;

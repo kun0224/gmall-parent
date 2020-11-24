@@ -1,9 +1,7 @@
 package com.zhao.gmall.product.client;
 
 import com.zhao.gmall.common.result.Result;
-import com.zhao.gmall.model.product.BaseCategoryView;
-import com.zhao.gmall.model.product.SkuInfo;
-import com.zhao.gmall.model.product.SpuSaleAttr;
+import com.zhao.gmall.list.product.*;
 import com.zhao.gmall.product.client.impl.ProductDegradeFeignClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,5 +67,21 @@ public interface ProductFeignClient {
      */
     @GetMapping("/api/product/getBaseCategoryList")
     Result getBaseCategoryList();
+
+    /**
+     * 通过品牌Id 集合来查询数据
+     * @param tmId
+     * @return
+     */
+    @GetMapping("/api/product/inner/getTrademark/{tmId}")
+    BaseTrademark getTrademark(@PathVariable("tmId")Long tmId);
+
+    /**
+     * 通过skuId 集合来查询数据
+     * @param skuId
+     * @return
+     */
+    @GetMapping("/api/product/inner/getAttrList/{skuId}")
+    List<BaseAttrInfo> getAttrList(@PathVariable("skuId") Long skuId);
 
 }

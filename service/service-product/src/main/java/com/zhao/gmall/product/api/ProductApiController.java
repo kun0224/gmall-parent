@@ -2,9 +2,7 @@ package com.zhao.gmall.product.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhao.gmall.common.result.Result;
-import com.zhao.gmall.model.product.BaseCategoryView;
-import com.zhao.gmall.model.product.SkuInfo;
-import com.zhao.gmall.model.product.SpuSaleAttr;
+import com.zhao.gmall.list.product.*;
 import com.zhao.gmall.product.service.ManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,6 +87,23 @@ public class ProductApiController {
     public Result getBaseCategoryList() {
         List<JSONObject> list = manageService.getBaseCategoryList();
         return Result.ok(list);
+    }
+
+    /**
+     * 通过品牌Id 集合来查询数据
+     * @param tmId
+     * @return
+     */
+    @GetMapping("inner/getTrademark/{tmId}")
+    public BaseTrademark getTrademark(@PathVariable("tmId")Long tmId){
+        // BaseTrademark baseTrademark = baseTrademarkService.getById(tmId);
+        return manageService.getTrademarkByTmId(tmId);
+    }
+
+    //  根据skuId 获取平台属性+平台属性值
+    @GetMapping("inner/getAttrList/{skuId}")
+    public List<BaseAttrInfo> getAttrList(@PathVariable Long skuId){
+        return manageService.getAttrList(skuId);
     }
 
 

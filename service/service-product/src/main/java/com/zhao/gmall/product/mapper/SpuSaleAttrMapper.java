@@ -1,7 +1,7 @@
 package com.zhao.gmall.product.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zhao.gmall.model.product.SpuSaleAttr;
+import com.zhao.gmall.list.product.SpuSaleAttr;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

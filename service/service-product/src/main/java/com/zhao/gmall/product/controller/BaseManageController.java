@@ -3,12 +3,10 @@ package com.zhao.gmall.product.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sun.org.apache.regexp.internal.RE;
 import com.zhao.gmall.common.result.Result;
-import com.zhao.gmall.model.product.*;
+import com.zhao.gmall.list.product.*;
 import com.zhao.gmall.product.service.ManageService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

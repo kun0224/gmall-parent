@@ -1,7 +1,7 @@
 package com.zhao.gmall.product.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zhao.gmall.model.product.SkuSaleAttrValue;
+import com.zhao.gmall.list.product.SkuSaleAttrValue;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

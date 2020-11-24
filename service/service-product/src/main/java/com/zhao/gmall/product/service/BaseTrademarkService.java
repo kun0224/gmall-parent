@@ -3,7 +3,7 @@ package com.zhao.gmall.product.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.zhao.gmall.model.product.BaseTrademark;
+import com.zhao.gmall.list.product.BaseTrademark;
 
 
 public interface BaseTrademarkService extends IService<BaseTrademark> {

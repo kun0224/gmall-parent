@@ -1,9 +1,7 @@
 package com.zhao.gmall.product.client.impl;
 
 import com.zhao.gmall.common.result.Result;
-import com.zhao.gmall.model.product.BaseCategoryView;
-import com.zhao.gmall.model.product.SkuInfo;
-import com.zhao.gmall.model.product.SpuSaleAttr;
+import com.zhao.gmall.list.product.*;
 import com.zhao.gmall.product.client.ProductFeignClient;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +38,16 @@ public class ProductDegradeFeignClient implements ProductFeignClient {
 
     @Override
     public Result getBaseCategoryList() {
+        return null;
+    }
+
+    @Override
+    public BaseTrademark getTrademark(Long tmId) {
+        return null;
+    }
+
+    @Override
+    public List<BaseAttrInfo> getAttrList(Long skuId) {
         return null;
     }
 }

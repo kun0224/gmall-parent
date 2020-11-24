@@ -8,11 +8,11 @@ namespace是名称空间,它的取值必须是对应的接口的全类名
 -->
 <mapper namespace="com.zhao.gmall.product.mapper.BaseAttrInfoMapper">
 
-    <resultMap id="baseAttrInfoMap" type="com.zhao.gmall.model.product.BaseAttrInfo" autoMapping="true">
+    <resultMap id="baseAttrInfoMap" type="com.zhao.gmall.list.product.BaseAttrInfo" autoMapping="true">
 
         <id property="id" column="id"></id>
 
-        <collection property="attrValueList" ofType="com.zhao.gmall.model.product.BaseAttrValue" autoMapping="true">
+        <collection property="attrValueList" ofType="com.zhao.gmall.list.product.BaseAttrValue" autoMapping="true">
             <id property="id" column="attr_value_id"></id>
         </collection>
 
@@ -49,5 +49,22 @@ namespace是名称空间,它的取值必须是对应的接口的全类名
         </where>
         order by bai.category_level, bai.id
 
+    </select>
+
+    <select id="selectAttrList" resultMap="baseAttrInfoMap">
+        SELECT
+            bai.id,
+            bai.attr_name,
+            bai.category_id,
+            bai.category_level,
+            bav.id attr_value_id,
+            bav.value_name,
+            bav.attr_id
+        FROM
+            base_attr_info bai
+                INNER JOIN base_attr_value bav ON bai.id = bav.attr_id
+                INNER JOIN sku_attr_value sav ON sav.value_id = bav.id
+        WHERE
+                sav.sku_id = #{skuId};
     </select>
 </mapper>

@@ -8,11 +8,11 @@ namespace是名称空间,它的取值必须是对应的接口的全类名
 -->
 <mapper namespace="com.zhao.gmall.product.mapper.SpuSaleAttrMapper">
 
-    <resultMap id="SpuSaleAttrMap" type="com.zhao.gmall.model.product.SpuSaleAttr" autoMapping="true">
+    <resultMap id="SpuSaleAttrMap" type="com.zhao.gmall.list.product.SpuSaleAttr" autoMapping="true">
 
         <id property="id" column="id"></id>
         <!--      spuSaleAttrValueList要与 SpuSaleAttr的属性名相同-->
-        <collection property="spuSaleAttrValueList" ofType="com.zhao.gmall.model.product.SpuSaleAttrValue"
+        <collection property="spuSaleAttrValueList" ofType="com.zhao.gmall.list.product.SpuSaleAttrValue"
                     autoMapping="true">
             <id property="id" column="sale_attr_value_id"></id>
         </collection>

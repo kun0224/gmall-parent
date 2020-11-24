@@ -3,7 +3,7 @@ package com.zhao.gmall.product.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhao.gmall.common.result.Result;
-import com.zhao.gmall.model.product.BaseTrademark;
+import com.zhao.gmall.list.product.BaseTrademark;
 import com.zhao.gmall.product.service.BaseTrademarkService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
