@@ -38,6 +38,11 @@ spring:
           uri: lb://service-order
           predicates:
             - Path=/*/order/**
+        - id: service-activity
+          uri: lb://service-activity
+          predicates:
+            - Path=/*/activity/** # 路径匹配
+
         #==================web前端==========================
         - id: web-item
           uri: lb://web-all
@@ -63,6 +68,10 @@ spring:
           uri: lb://web-all
           predicates:
             - Host=order.gmall.com
+        - id: web-activity
+          uri: lb://web-all
+          predicates:
+            - Host=activity.gmall.com
 
 
 authUrls:

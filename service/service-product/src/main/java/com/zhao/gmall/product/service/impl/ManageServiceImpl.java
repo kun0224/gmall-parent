@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhao.gmall.common.cache.GmallCache;
+import com.zhao.gmall.common.constant.MqConst;
 import com.zhao.gmall.common.constant.RedisConst;
+import com.zhao.gmall.common.service.RabbitService;
 import com.zhao.gmall.list.product.*;
 import com.zhao.gmall.product.mapper.*;
 import com.zhao.gmall.product.service.ManageService;
@@ -74,6 +76,9 @@ public class ManageServiceImpl implements ManageService {
 
     @Autowired
     private BaseTrademarkMapper baseTrademarkMapper;
+
+    @Autowired
+    private RabbitService rabbitService;
 
     /**
      * 查询所有的一级分类信息
@@ -293,6 +298,8 @@ public class ManageServiceImpl implements ManageService {
                 skuAttrValueMapper.insert(skuAttrValue);
             }
         }
+        //  保存完成之后，进行商品上架
+        rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_GOODS,MqConst.ROUTING_GOODS_UPPER,skuInfo.getId());
     }
 
     /**
@@ -317,10 +324,17 @@ public class ManageServiceImpl implements ManageService {
     @Override
     @Transactional
     public void onSale(Long skuId) {
+        //  update sku_info set is_sale = 1 where id = skuId
         SkuInfo skuInfo = new SkuInfo();
         skuInfo.setId(skuId);
         skuInfo.setIsSale(1);
         skuInfoMapper.updateById(skuInfo);
+
+        //  上架 自动完成es 中 上架  localhost:8203/api/list/inner/upperGoods/33
+        //  远程调用 service-list.upperGoods(skuId);
+        //  发送一个消息队列 执行 upperGoods
+        //  发送的内容要根据消费者做什么处理来决定么?
+        rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_GOODS,MqConst.ROUTING_GOODS_UPPER,skuId);
     }
 
     /**
@@ -331,10 +345,16 @@ public class ManageServiceImpl implements ManageService {
     @Override
     @Transactional
     public void cancelSale(Long skuId) {
+        //  update sku_info set is_sale = 0 where id=skuId
         SkuInfo skuInfo = new SkuInfo();
         skuInfo.setId(skuId);
         skuInfo.setIsSale(0);
         skuInfoMapper.updateById(skuInfo);
+
+        //  下架：自动完成es 中 下架  localhost:8203/api/list/inner/lowerGoods/33
+        //  lowerGoods(skuId)
+        //  发送一个消息队列 执行 lowerGoods
+        rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_GOODS,MqConst.ROUTING_GOODS_LOWER,skuId);
     }
 
 
